@@ -6,6 +6,9 @@ export class CreateCarDto extends Car {
   make: string;
 
   @ApiProperty()
+  model: string;
+
+  @ApiProperty()
   manufacture_year: string;
 
   @ApiProperty()
