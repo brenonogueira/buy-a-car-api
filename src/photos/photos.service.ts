@@ -30,7 +30,7 @@ export class PhotosService {
     const createData = await this.prisma.photos.create({ data });
     return {
       ...createData,
-      url: `http://localhost:3333/photos/uploads/${createData.filename}`,
+      url: `${process.env.APP_URL}/${createData.filename}`,
     };
     // return this.retorno(createData);
   }

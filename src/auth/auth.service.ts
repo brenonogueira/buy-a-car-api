@@ -38,6 +38,7 @@ export class AuthService {
     // console.log('chegou no login do service');
     const payload = { user };
     return {
+      ...user,
       access_token: this.jwtService.sign(payload),
     };
   }

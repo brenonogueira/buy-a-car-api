@@ -13,13 +13,13 @@ import {
   Query,
   UploadedFile,
   Res,
-  StreamableFile,
+  // StreamableFile,
   // Res,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { createReadStream } from 'fs';
-import { extname, join } from 'path';
-import { multerOptions } from 'src/multercfg/multer.config';
+// import { createReadStream } from 'fs';
+import { extname } from 'path';
+// import { multerOptions } from 'src/multercfg/multer.config';
 import { PhotosService } from './photos.service';
 // import { CreatePhotoDto } from './dto/create-photo.dto';
 // import { UpdatePhotoDto } from './dto/update-photo.dto';
@@ -65,7 +65,7 @@ export class PhotosController {
 
   uploadImg(@UploadedFile() file) {
     return {
-      url: `http://localhost:3333/${file.path}`,
+      url: `${process.env.APP_URL}/${file.path}`,
     };
   }
 

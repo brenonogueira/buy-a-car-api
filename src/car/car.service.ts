@@ -88,7 +88,7 @@ export class CarService {
 
     const array_fotos = findOneCar.photos.map((foto) => {
       return {
-        url: `http://localhost:3333/photos/uploads/${foto.filename}`,
+        url: `${process.env.APP_URL}/photos/uploads/${foto.filename}`,
       };
     });
 
@@ -116,12 +116,8 @@ export class CarService {
   }
 
   async remove(id: number) {
-    await this.prisma.car.delete({
+    return await this.prisma.car.delete({
       where: { id },
     });
-
-    return {
-      car: 'deleted',
-    };
   }
 }
