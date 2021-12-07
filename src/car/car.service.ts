@@ -46,7 +46,7 @@ export class CarService {
         user_email: car.user.email,
         photos: car.photos.map((car) => {
           return {
-            url: `http://localhost:3333/photos/uploads/${car.filename}`,
+            url: `${process.env.APP_URL}/photos/uploads/${car.filename}`,
           };
         }),
       };
