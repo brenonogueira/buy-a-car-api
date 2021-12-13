@@ -6,7 +6,8 @@ import { PrismaService } from 'src/prisma/prisma.service';
 // import { Photos } from '@prisma/client';
 import * as path from 'path';
 import * as fs from 'fs';
-
+import { S3 } from 'aws-sdk';
+import { uuid } from 'uuidv4';
 @Injectable()
 export class PhotosService {
   constructor(private prisma: PrismaService) {}
@@ -31,6 +32,37 @@ export class PhotosService {
     return {
       ...createData,
       url: `${process.env.APP_URL}/${createData.filename}`,
+    };
+    // return this.retorno(createData);
+  }
+
+  async uploadFile(body: any, imageBuffer: Buffer, filename: string) {
+    const s3 = new S3();
+
+    const uploadResult = await s3
+      .upload({
+        Bucket: 'brenodevbuckettest',
+        Key: `${uuid()}-${filename}`,
+        Body: imageBuffer,
+      })
+      .promise();
+    // return uploadResult;
+    console.log(uploadResult);
+
+    const data: any = {
+      car_id: +body.car_id,
+      user_id: +body.user_id,
+      photo_name: body.photo_name,
+      filename: uploadResult.Key,
+      path: uploadResult.Location,
+      mimetype: body.mimetype,
+      // size: parseInt(params.size),
+    };
+
+    const createData = await this.prisma.photos.create({ data });
+    return {
+      ...createData,
+      url: `${uploadResult.Location}`,
     };
     // return this.retorno(createData);
   }

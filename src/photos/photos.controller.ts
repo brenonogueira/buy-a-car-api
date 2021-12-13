@@ -13,6 +13,8 @@ import {
   Query,
   UploadedFile,
   Res,
+  Req,
+  Body,
   // StreamableFile,
   // Res,
 } from '@nestjs/common';
@@ -56,6 +58,28 @@ export class PhotosController {
       photo_name,
       ...file,
     });
+  }
+
+  @Post('upload-s3')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadFileS3(
+    @Body() request,
+    @Query('car_id') car_id: number,
+    @Query('user_id') user_id: number,
+    @Query('photo_name') photo_name: string,
+    @Param('id') id: number,
+    @UploadedFile() file,
+  ) {
+    console.log(file);
+    return await this.photosService.uploadFile(
+      {
+        car_id,
+        user_id,
+        photo_name,
+      },
+      file.buffer,
+      file.originalname,
+    );
   }
 
   @Get('uploads/:path')
